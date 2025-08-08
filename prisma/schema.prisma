@@ -85,3 +85,12 @@ model Application {
   createdAt DateTime @default(now())
 }
 
+model Score {
+  id        Int      @id @default(autoincrement())
+  name      String   // プレイヤーの名前
+  hole      Int      // 何ホール目か（1〜18）
+  strokes   Int      // 打数
+  createdAt DateTime @default(now())
+}
+
+

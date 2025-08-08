@@ -15,6 +15,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="text-xl font-bold text-[color:var(--accent)]">SW Invitational</div>
         </header>
         <main className="max-w-4xl mx-auto p-4">
+        <main className="pt-20">{children}</main> {/* ヘッダー分の余白 */}
+
           {children}
         </main>
       </body>
