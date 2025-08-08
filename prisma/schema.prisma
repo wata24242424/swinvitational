@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  avgScore  Int
+  canDrive  Boolean
+  pickup    String?
+  note      String?
+  createdAt DateTime @default(now())
+  entries   Entry[]
+  comments  Comment[]
+}
+
+model Tournament {
+  id        String   @id @default(cuid())
+  title     String
+  date      DateTime
+  createdAt DateTime @default(now())
+  entries   Entry[]
+  rounds    Round[]
+  comments  Comment[]
+}
+
+model Entry {
+  id           String     @id @default(cuid())
+  userId       String
+  tournamentId String
+  user         User       @relation(fields: [userId], references: [id])
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  createdAt    DateTime   @default(now())
+}
+
+model Round {
+  id           String     @id @default(cuid())
+  tournamentId String
+  playerName   String
+  gross        Int
+  handicap     Int
+  net          Int
+  createdAt    DateTime   @default(now())
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  comments     Comment[]
+}
+
+model Comment {
+  id           String     @id @default(cuid())
+  body         String
+  userId       String?
+  roundId      String?
+  tournamentId String?
+  createdAt    DateTime   @default(now())
+  user         User?      @relation(fields: [userId], references: [id])
+  round        Round?     @relation(fields: [roundId], references: [id])
+  tournament   Tournament? @relation(fields: [tournamentId], references: [id])
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  caption   String?
+  createdAt DateTime @default(now())
+}
+
+model Application {
+  id        Int      @id @default(autoincrement())
+  name      String
+  score     Int
+  car       String
+  pickup    String?
+  comment   String?
+  createdAt DateTime @default(now())
+}
+
